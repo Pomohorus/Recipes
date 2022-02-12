@@ -57,4 +57,36 @@ def cook_book(file_name):
     res = recipes
 
     return res
-print(cook_book('recipes.txt'))
+
+
+def get_shop_list_by_dishes(dishes, person_count):
+    book = cook_book('recipes.txt')
+    ingridients = []
+    for key in book:
+        for dish in dishes:
+            if key == dish:
+                ingridients.append(book[key])
+    food_list = []
+    for recipe in ingridients:
+        for food in recipe:
+            food_list.append(list(food.values()))
+    index_1 = 0
+    index_2 = 1
+    food = {}
+    count = {}
+    while index_1 < len(food_list):
+        while index_2 < len(food_list):
+            if food_list[index_1][0] == food_list[index_2][0]:
+                food_list[index_1][1] = int(food_list[index_1][1]) * 2
+                del(food_list[index_2])
+            index_2 += 1
+        food_list[index_1][1] = int(food_list[index_1][1]) * int(person_count)
+        count['measure'] = food_list[index_1][2]
+        count['quantity'] = food_list[index_1][1]
+        food[food_list[index_1][0]] = count
+        count = {}
+        index_1 += 1
+        index_2 = index_1 + 1
+    return food
+
+print(get_shop_list_by_dishes(['Фахитос', 'Омлет'], 3))
